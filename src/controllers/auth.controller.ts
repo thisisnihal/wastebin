@@ -1,23 +1,32 @@
-import { Request, Response } from 'express';
-import { ApiError, ApiResponse, asyncHandler } from '@util/apiResponse.util';
-import User, { IUser } from '@models/user.model';
+import { Request, Response } from "express";
+import { ApiError, ApiResponse, asyncHandler } from "@util/apiResponse.util";
+import User, { IUser } from "@models/user.model";
 
-export const register = asyncHandler(async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-    const avatarFile = (req.files as Express.Multer.File[])?.[0];
 
-    console.log('Avatar file:', avatarFile);
 
-    console.log(email, password);
+export const logout = asyncHandler(async (req:Request, res:Response) => {
+  const user = req.user as IUser;
+  await User.findByIdAndUpdate(
+    user._id,
+    { $set: { refreshToken: undefined } },
+    { new: true }
+  );
 
-    if (!email || !password) throw new ApiError(400, "Email and password are required : )");
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
 
-    res.status(200).json(new ApiResponse(200, { email }, 'Registered Successfully!'));
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User logged out"));
 });
 
-export const googleOAuthCallback = asyncHandler(async (req:Request, res:Response) => {
+export const googleOAuthCallback = asyncHandler(
+  async (req: Request, res: Response) => {
     const tempUser = req.user as IUser;
-    console.log("tempUser: ", tempUser);
     const user = await User.findById(tempUser.id);
     if (!user) {
       throw new ApiError(401, "token expired sign in again");
@@ -27,4 +36,5 @@ export const googleOAuthCallback = asyncHandler(async (req:Request, res:Response
     user.save();
     res.cookie("accessToken", accessToken, { httpOnly: true, secure: true });
     res.redirect(`/`);
-  });
+  }
+);

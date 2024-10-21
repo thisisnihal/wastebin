@@ -39,6 +39,11 @@ export const conf = {
     CLOUDINARY_API_KEY: String(process.env.CLOUDINARY_API_KEY),
     CLOUDINARY_API_SECRET: String(process.env.CLOUDINARY_API_SECRET),
 
+    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+    AWS_REGION: process.env.AWS_REGION,
+    AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME,
+
     MAIL_HOST: String(process.env.MAIL_HOST),
     MAIL_ADDRESS: String(process.env.MAIL_ADDRESS),
     MAIL_PASSWORD: String(process.env.MAIL_PASSWORD),

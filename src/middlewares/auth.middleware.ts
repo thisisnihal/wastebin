@@ -27,3 +27,19 @@ export const verifyJWT = asyncHandler(async (req: Request, res: Response, next: 
         throw new ApiError(401, "Invalid Token");
     }
 });
+
+export const verifyJWTOptional = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
+
+    if (!token) return next(); 
+
+    const decoded = jwt.verify(token, conf.ACCESS_TOKEN_SECRET!) as IDecodedToken;
+    const user = await User.findById(decoded._id).select("-password -refreshToken") as IUser;
+
+    if (!user) return next();
+
+    req.user = user;
+    console.log("JWT user = ", user);
+
+    next();
+});
