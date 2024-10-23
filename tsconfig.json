@@ -27,7 +27,8 @@
       "@middlewares/*": ["src/middlewares/*"],
       "@util/*": ["src/util/*"],
       "@config/*": ["src/config/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/services/*"],
+      "@views/*": ["src/views/*"]
     }
   },
   "include": ["src/**/*"],  
