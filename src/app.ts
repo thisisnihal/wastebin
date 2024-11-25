@@ -3,7 +3,8 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser'
 import cors from 'cors';
 import authRoutes from '@routes/auth.routes';
-import pasteRoutes from '@routes/paste.routes'
+import pasteRoutes from '@routes/paste.routes';
+import dashboardRoutes from "@routes/dashabord.routes"
 import { ApiResponse, ApiError, asyncHandler } from '@util/apiResponse.util';
 import { rateLimiter } from '@middlewares/rateLimiter.middleware';
 import { conf } from './conf';
@@ -64,8 +65,7 @@ app.get('/private', verifyJWT, asyncHandler(async (req: Request, res: Response) 
 
 //
 app.use(`${conf.API_ENDPOINT}/paste`, pasteRoutes);
-
-
+app.use(`${conf.API_ENDPOINT}/user`, dashboardRoutes);
 
 
 
