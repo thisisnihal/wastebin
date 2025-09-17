@@ -1,0 +1,1 @@
+# WasteBin - Text Snippet sharing platform
